@@ -1,0 +1,43 @@
+.main {
+    background-color: white;
+    height: 100%;
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 50px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.button {
+    background-color: #fc6006; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.welcome-container {
+    width: 50%;
+    margin: auto;
+}
+
+.welcome-container>img {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.button-div {
+    display: flex;
+    width: 37%;
+    margin: 20px auto;
+    justify-content: space-evenly;
+}
