@@ -1,16 +1,24 @@
+import { useContext, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
+import { AuthContext } from '../../Contexts/AuthContext';
+
 export const Header = () => {
+    const {userEmail, isAuthenticated} = useContext(AuthContext);
+
     return (
         <nav>
             <Link className="active" to="/">Home</Link>
-            <Link to="/Catalog">All Recipes</Link>
+            <Link to="/catalog">All Recipes</Link>
             <Link to="#">My Recipes</Link>
-            <Link to="/Create-recipe">Share Recipe</Link>
-            <div className="profile">
-                <Link>Welcome username</Link>
-                <Link to="#">Logout</Link>
-            </div>
+            <Link to="/create-recipe">Share Recipe</Link>
+            {isAuthenticated && (
+                <div className="profile">
+                    <Link>{`Welcome ${userEmail}`}</Link>
+                    <Link to="/logout">Logout</Link>
+                </div>
+            )}
+            
         </nav>
     )
 }

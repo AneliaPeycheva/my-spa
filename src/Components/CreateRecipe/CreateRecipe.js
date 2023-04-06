@@ -1,21 +1,37 @@
-export const CreateRecipe = () => {
+import { useContext } from 'react';
+import { useForm } from '../../Hooks/useForm';
+
+import { AuthContext } from '../../Contexts/AuthContext';
+
+export const CreateRecipe = ({
+    onCreateRecipeSubmit
+}) => {
+    const [values, changeHandler, onSubmit] = useForm({
+        title:"",
+        imageUrl:"",
+        description:"",
+        category:""
+    }, onCreateRecipeSubmit)
     return (
         <div className="create-recipe">
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className="container">
                     <h1>Share Recipe</h1>
                     <p>Please fill in this form.</p>                  
               
                     <p>Title</p>                                      
-                    <input type="text" placeholder="Enter Title" name="title" />                                  
+                    <input type="text" placeholder="Enter Title" name="title" value={values.title} onChange={changeHandler}/>                                  
 
-                    <p>Car Image</p>
-                    <input type="text" placeholder="Enter Car Image" name="imageUrl" />
+                    <p>Recipe Image</p>
+                    <input type="text" placeholder="Enter Recipe Image" name="imageUrl" value={values.imageUrl} onChange={changeHandler}/>                
 
                     <p>Description</p>
-                    <input type="text" placeholder="Enter Description" name="description" /> 
+                    <input type="text" placeholder="Enter Description" name="description" value={values.description} onChange={changeHandler}/> 
+
+                    <p>Category</p>
+                    <input type="text" placeholder="Enter Category" name="category" value={values.category} onChange={changeHandler}/>
                 
-                    <button type="submit" class="registerbtn">Create</button>
+                    <button type="submit" className="registerbtn">Create</button>
                 </div>
             </form>
         </div>

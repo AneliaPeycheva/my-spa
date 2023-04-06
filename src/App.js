@@ -1,30 +1,104 @@
-import { Routes, Route } from 'react-router-dom';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
+import { authServiceFactory} from './Services/authService';
+import { recipeServiceFactory } from './Services/recipeService';
+
 import { Header } from './Components/Header/Header';
 import { Footer } from './Components/Footer/Footer';
 import { Main } from './Components/Main/Main';
 import { Login } from './Components/Login/Login';
 import { Register } from './Components/Register/Register';
+import { Logout }  from './Components/Logout/Logout';
 import { Catalog } from './Components/Catalog/Catalog';
 import { CreateRecipe } from './Components/CreateRecipe/CreateRecipe';
+import { AuthContext } from './Contexts/AuthContext';
 
 function App() {
+  const [recipes, setRecipes] = useState([]);
+  const [auth, setAuth] = useState({});
+  const authService = authServiceFactory(auth.accessToken);
+  const recipeService = recipeServiceFactory(auth.accessToken);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    recipeService.getAll()
+    .then(res => setRecipes(res)); 
+  },[])
+
+  const onLoginSubmit = async (data) => {
+    try {
+        const result = await authService.login(data);
+
+        setAuth(result);
+
+        navigate('/catalog');
+    } catch (error) {
+        console.log('There is a problem');
+    }
+  };
+
+
+  const onRegisterSubmit = async (values) => {
+    const { confirmPassword, ...registerData } = values;
+    if (confirmPassword !== registerData.password) {
+        return;
+    }
+
+    try {
+        const result = await authService.register(registerData);
+
+        setAuth(result);
+        
+        navigate('/catalog');
+    } catch (error) {
+        console.log('There is a problem');
+    }
+  };
+
+  const onCreateRecipeSubmit = async (data) => {
+    const recipe = await recipeService.create(data);
+
+    setRecipes(state => [...state, recipe]);
+      
+    navigate('/catalog');
+  }
+ 
+
+  const onLogout = async() => {
+    // await authService.logout();
+    setAuth({});
+  }
+
+  const contextValues = {
+    onRegisterSubmit,
+    onLoginSubmit,
+    onLogout,
+    userId:auth._id,
+    token:auth.accessToken,
+    userEmail:auth.email,
+    isAuthenticated:!!auth.accessToken
+  }
+
   return (
-    <div id="container">
+    <AuthContext.Provider value={contextValues} >
+      <div id="container">
 
         <Header />
 
         <Routes>
-          <Route path='/' element={<Main />} ></Route>
-          <Route path='Login' element={<Login />} ></Route>
-          <Route path='Register' element={<Register />} ></Route>
-          <Route path='Catalog' element={<Catalog />} ></Route>
-          <Route path='Create-Recipe' element={<CreateRecipe />} ></Route>
+          <Route path='/' element={<Main />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/logout' element={<Logout />} />
+          <Route path='/catalog' element={<Catalog recipes={recipes}/>} />
+          <Route path='/create-recipe' element={<CreateRecipe onCreateRecipeSubmit={onCreateRecipeSubmit}/>} />
         </Routes>       
 
         <Footer />  
-      
-    </div>
+
+      </div>
+    </AuthContext.Provider>    
   );
 }
 
