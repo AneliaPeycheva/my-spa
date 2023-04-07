@@ -10,8 +10,18 @@ export const Header = () => {
         <nav>
             <Link className="active" to="/">Home</Link>
             <Link to="/catalog">All Recipes</Link>
-            <Link to="#">My Recipes</Link>
-            <Link to="/create-recipe">Share Recipe</Link>
+            {isAuthenticated && (
+                <>
+                    <Link to="#">My Recipes</Link>
+                    <Link to="/create-recipe">Share Recipe</Link>
+                </>               
+            )}        
+            {!isAuthenticated && (
+                <div className="profile">
+                    <Link to="/login">Login</Link>
+                    <Link to="/register">Register</Link>                 
+                </div>
+            )}
             {isAuthenticated && (
                 <div className="profile">
                     <Link>{`Welcome ${userEmail}`}</Link>

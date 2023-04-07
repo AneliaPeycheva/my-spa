@@ -13,6 +13,8 @@ import { Logout }  from './Components/Logout/Logout';
 import { Catalog } from './Components/Catalog/Catalog';
 import { CreateRecipe } from './Components/CreateRecipe/CreateRecipe';
 import { AuthContext } from './Contexts/AuthContext';
+import { RecipeDetails } from './Components/RecipeDetails/RecipeDetails';
+import { EditRecipe } from './Components/EditRecipe/EditRecipe';
 
 function App() {
   const [recipes, setRecipes] = useState([]);
@@ -56,6 +58,11 @@ function App() {
     }
   };
 
+  const onLogout = async() => {
+    // await authService.logout();
+    setAuth({});
+  }
+
   const onCreateRecipeSubmit = async (data) => {
     const recipe = await recipeService.create(data);
 
@@ -63,11 +70,13 @@ function App() {
       
     navigate('/catalog');
   }
- 
 
-  const onLogout = async() => {
-    // await authService.logout();
-    setAuth({});
+  const onEditRecipeSubmit = async (values) => {
+    const recipe = await recipeService.edit(values._id, values);
+
+    setRecipes(state => state.map(x => x._id === values._id ? recipe : x))
+      
+    navigate(`/catalog/${values._id}`);
   }
 
   const contextValues = {
@@ -91,8 +100,10 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
-          <Route path='/catalog' element={<Catalog recipes={recipes}/>} />
+          <Route path='/catalog' element={<Catalog recipes={recipes}/>} />        
+          <Route path='/catalog/:id' element={<RecipeDetails />} />   
           <Route path='/create-recipe' element={<CreateRecipe onCreateRecipeSubmit={onCreateRecipeSubmit}/>} />
+          <Route path='/catalog/:id/edit' element={<EditRecipe onEditRecipeSubmit={onEditRecipeSubmit} />} />
         </Routes>       
 
         <Footer />  

@@ -1,19 +1,34 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useForm } from '../../Hooks/useForm';
+
+import { recipeServiceFactory } from '../../Services/recipeService';
 
 import { AuthContext } from '../../Contexts/AuthContext';
 
-export const CreateRecipe = ({
-    onCreateRecipeSubmit
+export const EditRecipe = ({
+    onEditRecipeSubmit
 }) => {
-    const [values, changeHandler, onSubmit] = useForm({
+    const {id} = useParams();
+    const [values, changeHandler, onSubmit, changeValues] = useForm({
+        _id:"",
         title:"",
         imageUrl:"",
         description:"",
         ingredients:"",
         preparation:"",
         category:""
-    }, onCreateRecipeSubmit)
+    }, onEditRecipeSubmit);
+    const {token} = useContext(AuthContext);
+    const recipeService = recipeServiceFactory(token);
+
+    useEffect(() => {
+        recipeService.getOne(id)
+        .then(res => {
+            changeValues(res)
+        })
+    }, [id]);
+    
     return (
         <div className="create-recipe">
             <form onSubmit={onSubmit}>
@@ -39,7 +54,7 @@ export const CreateRecipe = ({
                     <p>Category</p>
                     <input type="text" placeholder="Enter Category" name="category" value={values.category} onChange={changeHandler}/>
                 
-                    <button type="submit" className="registerbtn">Create</button>
+                    <button type="submit" className="registerbtn">Update</button>
                 </div>
             </form>
         </div>

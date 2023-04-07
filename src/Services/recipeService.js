@@ -10,16 +10,26 @@ export const recipeServiceFactory = (token) => {
         return result;
     }
 
-    const create = async (data) => {
-        console.log(data)
-        const result = await request.post(baseUrl, data);
-        console.log(result)
+    const getOne = async (recipeId) => {
+        const result = await request.get(`${baseUrl}/${recipeId}`);
         return result;
     }
 
+    const create = async (data) => {     
+        const result = await request.post(baseUrl, data);        
+        return result;
+    }
+
+    const edit = (recipeId, data) => request.put(`${baseUrl}/${recipeId}`, data);
+
+    const deleteRecipe = (recipeId) => request.delete(`${baseUrl}/${recipeId}`);
+
     return {
         getAll,
-        create
+        getOne,
+        create,
+        edit,
+        delete:deleteRecipe
     }
 
 }
