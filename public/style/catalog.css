@@ -40,7 +40,7 @@
 
 .card-btn {
     border:none;
-    color: rgb(238, 205, 199);
+    color: rgb(12, 12, 12);
     background-color: tomato;
     margin:0 auto;
     padding: 12px 24px;
@@ -57,7 +57,7 @@
 }
 
 .card-btn:focus, .card-btn:hover {
-  background-color: rgb(238, 205, 199);
+  background-color: rgb(8, 8, 8);
   color: tomato;
 }
 
@@ -104,6 +104,7 @@ article h2 {
     margin:10px 20px;
     align-items: left;
 }
+
 
 
 

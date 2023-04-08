@@ -4,7 +4,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { recipeServiceFactory } from "../../Services/recipeService";
 import { AuthContext } from '../../Contexts/AuthContext';
 
-
 export const RecipeDetails = () => {
     const { id }  = useParams(); 
     const { token, userId, deleteRecipe } = useContext(AuthContext)
@@ -14,10 +13,11 @@ export const RecipeDetails = () => {
     useEffect(() => {
       recipeService.getOne(id)
           .then(result => {
-              setRecipe(result);
+              setRecipe(result);              
           })
     }, [id]);
 
+   
     const isOwner = recipe._ownerId === userId;
 
     const onDeleteClick = async () => {
@@ -33,26 +33,26 @@ export const RecipeDetails = () => {
         }
     }
     return (
-        <article className="card">
-            <h2>{recipe?.title}</h2>
-            <div className="card-image">
+        <article className="recipe-container">    
+            <div className="recipe-name">{recipe?.title}</div>
+            <div className="recipe-image">
                 <img src={recipe?.imageUrl} alt="Recipe image"/>
-            </div>                      
-            <div className="card-details">
-                <p className="label">Ingredients:</p>
+            </div> 
+            <div className="recipe-details">
+                <p className="recipe-title">Ingredients:</p>
                 <p>{recipe?.ingredients}</p>          
-                <p className="label">Preparation:</p>      
+                <p className="recipe-title">Preparation:</p>      
                 <p>{recipe?.preparation}</p>   
-                <p className="label">Author:</p>     
+                <p className="recipe-title">Author:</p>     
                 <p>{recipe?._ownerId}</p>             
             </div> 
             {isOwner && (
-                <div className="card-btn-container">
-                <Link to={`/catalog/${id}/edit`} className="card-btn">Edit</Link>     
-                <Link className="card-btn delete" onClick = {onDeleteClick}>Delete</Link> 
-                </div>  
-            )}       
-        </article>           
+            <div className="recipe-btn-container">
+                <Link to={`/catalog/${id}/edit`} className="recipe-btn">Edit</Link>     
+                <Link className="recipe-btn delete" onClick = {onDeleteClick}>Delete</Link> 
+            </div>  
+        )}    
+        </article>        
     )
 }
 
