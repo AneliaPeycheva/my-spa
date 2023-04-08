@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 import { recipeServiceFactory } from "../../Services/recipeService";
 import { AuthContext } from '../../Contexts/AuthContext';
@@ -7,10 +7,10 @@ import { AuthContext } from '../../Contexts/AuthContext';
 
 export const RecipeDetails = () => {
     const { id }  = useParams(); 
-    const { token, userId } = useContext(AuthContext)
+    const { token, userId, deleteRecipe } = useContext(AuthContext)
     const [recipe, setRecipe] = useState({});
     const recipeService  = recipeServiceFactory(token);
-   
+    const navigate = useNavigate();
     useEffect(() => {
       recipeService.getOne(id)
           .then(result => {
@@ -20,6 +20,18 @@ export const RecipeDetails = () => {
 
     const isOwner = recipe._ownerId === userId;
 
+    const onDeleteClick = async () => {
+        //eslint-disable-next-line no-restricted-globals
+        const result = confirm(`Are you sure you want to delete this recipe?`)
+      
+        if (result) {
+            await recipeService.delete(recipe._id);
+
+            deleteRecipe(recipe._id);
+
+            navigate('/catalog');
+        }
+    }
     return (
         <article className="card">
             <h2>{recipe?.title}</h2>
@@ -37,7 +49,7 @@ export const RecipeDetails = () => {
             {isOwner && (
                 <div className="card-btn-container">
                 <Link to={`/catalog/${id}/edit`} className="card-btn">Edit</Link>     
-                <Link className="card-btn delete">Delete</Link> 
+                <Link className="card-btn delete" onClick = {onDeleteClick}>Delete</Link> 
                 </div>  
             )}       
         </article>           

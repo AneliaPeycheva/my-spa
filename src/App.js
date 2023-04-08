@@ -79,10 +79,15 @@ function App() {
     navigate(`/catalog/${values._id}`);
   }
 
+  const deleteRecipe = (recipeId) => {
+    setRecipes(state => state.filter(x => x._id !== recipeId));
+  }
+
   const contextValues = {
     onRegisterSubmit,
     onLoginSubmit,
     onLogout,
+    deleteRecipe,
     userId:auth._id,
     token:auth.accessToken,
     userEmail:auth.email,
