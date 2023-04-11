@@ -1,7 +1,7 @@
 .recipe-container {
     width: 1200px;
     margin: 0 auto;
-    height: 600px;
+    height: fit-content;
     border: 1px solid #E0E0E0;
     padding: 24px 19px;
     font-size: 17px;
@@ -65,4 +65,9 @@
 .recipe-btn:focus, .recipe-btn:hover {
     background-color: rgb(238, 205, 199);
     color: tomato;
+}
+
+.like-img {
+    width: 40px;
+    height: 40px;
 }
