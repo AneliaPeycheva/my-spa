@@ -14,6 +14,7 @@ export const RecipeDetails = () => {
     const [recipe, setRecipe] = useState({});
     const recipeService  = recipeServiceFactory(token);
     const commentService = commentServiceFactory(token);
+   
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,7 +34,7 @@ export const RecipeDetails = () => {
     const onDeleteClick = async () => {
         //eslint-disable-next-line no-restricted-globals
         const result = confirm(`Are you sure you want to delete this recipe?`)
-      
+        //const result = window.confirm(`Are you sure you want to delete this recipe?`)
         if (result) {
             await recipeService.delete(recipe._id);
 
@@ -43,10 +44,11 @@ export const RecipeDetails = () => {
         }
     }
 
-    const onLikeClick = (id) => {
-        setRecipe(x => x._id === id ? {...x, likes : x.likes + 1} : x);   
-        likeRecipe(id);
-    }
+    // const onLikeClick = async(recipeId) => {
+    //     //setRecipe(x => x._id === id ? {...x, likes : x.likes + 1} : x);   
+    //    let result = await likeService.create(recipeId);
+    //    console.log( result)
+    // }
 
     const onCommentSubmit = async (values) => {
         const result = await commentService.create(id, values.comment);    
@@ -66,46 +68,68 @@ export const RecipeDetails = () => {
  
     return (
         <article className="recipe-container">    
+        <div className="content-container">
             <div className="recipe-name">{recipe?.title}</div>
-            <div className="recipe-image">
-                <img src={recipe?.imageUrl} alt="Recipe image"/>
-            </div> 
-            <div className="recipe-details">
-                <p className="recipe-title">Ingredients:</p>
-                <p>{recipe?.ingredients}</p>          
-                <p className="recipe-title">Preparation:</p>      
-                <p>{recipe?.preparation}</p>   
-                <p className="recipe-title">Author:</p>     
-                <p>{recipe?._ownerId}</p>             
-            </div> 
-            <div className="details-comments">
-                {recipe.comments && (
-                    recipe.comments.map(x => <p key={x._id}>{x.author.email} {x.comment}</p>)
-                )}               
-            </div>
-            <div className="no-comments">
-                {!recipe.comments && (
-                   <p>No comments</p>)
-                }               
-            </div>
-            {isOwner && (
-            <div className="recipe-btn-container">
-                <Link to={`/catalog/${id}/edit`} className="recipe-btn">Edit</Link>     
-                <Link className="recipe-btn delete" onClick = {onDeleteClick}>Delete</Link> 
-            </div>  
-            )}   
-            {!isOwner && (
-            <div className="likes-container">      
-                <div><span>{recipe?.likes} likes</span> </div>      
-                <img className="like-img" src={heart} onClick={() =>onLikeClick(id)}/>
-            </div>
-            )}   
+                <div className="recipe-image">
+                    <img src={recipe?.imageUrl} alt="Recipe image"/>
+                </div> 
+                <div className="recipe-details">
+                    <p className="recipe-title">Ingredients:</p>
+                    <p>{recipe?.ingredients}</p>          
+                    <p className="recipe-title">Preparation:</p>      
+                    <p>{recipe?.preparation}</p>   
+                    {/* <p className="recipe-title">Author:</p>     
+                    <p>{recipe?._ownerId}</p>              */}
+                </div>       
+                {isOwner && (
+                <div className="recipe-btn-container">
+                    <Link to={`/catalog/${id}/edit`} className="recipe-btn">Edit</Link>     
+                    <Link className="recipe-btn delete" onClick = {onDeleteClick}>Delete</Link> 
+                </div>  
+                )}   
+                {/* {!isOwner && (
+                <div className="likes-container">      
+                    <div><span> likes</span> </div>      
+                    <img className="like-img" src={heart} onClick={() =>onLikeClick(id)}/>
+                </div>
+                )}    */}
+                <div className="respond-area">
+                    <h2 className="comments-title"><span>Comments</span></h2>                
+                </div>
+                <div className="details-comments">
+                <ul>
+                    {recipe.comments && (
+                        recipe.comments.map(x => (
+                            <li key={x._id}>
+                                <div className="comment-wrap">
+                                    <div className="comment-author"> {x.author.email}</div>
+                                    <div className="comment-content"> 
+                                        <p>{x.comment}</p>
+                                    </div>
+                                </div>   
+                            </li>)
+                        )                            
+                    )}  
+                </ul>                           
+                </div>
+                <div className="no-comments">
+                    {!recipe.comments && (
+                    <p>No comments</p>)
+                    }               
+                </div>
 
-            {isAuthenticated && <AddComment onCommentSubmit={onCommentSubmit} />}
+                {isAuthenticated && <AddComment onCommentSubmit={onCommentSubmit} />}
+        </div>
+            
            
         </article>        
     )
 }
+
+
+
+
+
 
 
 

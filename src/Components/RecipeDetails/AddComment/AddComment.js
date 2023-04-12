@@ -6,11 +6,13 @@ export const AddComment = ({onCommentSubmit}) => {
         comment:""
     }, onCommentSubmit)
     return (
-        <article className="create-comment">
-            <label>Add new comment:</label>
-            <form className="form" onSubmit={onSubmit}>
-                <textarea name="comment" placeholder="Comment......" value={values.comment} onChange={handleChange}></textarea>
-                <input className="btn submit" type="submit" value="Add Comment" />
+        <article className="add-comment-container">
+            <h2>Add comment:</h2>
+            <form className="comment-form" onSubmit={onSubmit}>
+                <textarea name="comment" cols="63" rows="5" wrap="on" placeholder="Your comment here......" value={values.comment} onChange={handleChange}></textarea>
+                <div>
+                    <input className="recipe-btn" type="submit" value="Add Comment" />
+                </div>                
             </form>
         </article>
     )

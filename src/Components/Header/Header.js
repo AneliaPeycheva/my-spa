@@ -1,4 +1,5 @@
-import { useContext, useEffect} from 'react';
+import { useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../Contexts/AuthContext';
@@ -12,7 +13,7 @@ export const Header = () => {
             <Link to="/catalog">All Recipes</Link>
             {isAuthenticated && (
                 <>
-                    <Link to="#">My Recipes</Link>
+                    {/* <Link to="/my-catalog">My Recipes</Link> */}
                     <Link to="/create-recipe">Share Recipe</Link>
                 </>               
             )}        

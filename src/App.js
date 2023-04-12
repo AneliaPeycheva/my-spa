@@ -44,13 +44,14 @@ function App() {
   const [auth, setAuth] = useState({});
   const authService = authServiceFactory(auth.accessToken);
   const recipeService = recipeServiceFactory(auth.accessToken);
-  const commentService = commentServiceFactory(auth.accessToken);
   const navigate = useNavigate();
 
   useEffect(() => {
     recipeService.getAll()
-    .then(res => setRecipes(res)); 
-  }, []) 
+    .then(res => {
+      setRecipes(res);   
+    });       
+  }, []);
 
   const onLoginSubmit = async (data) => {
     try {
@@ -83,7 +84,7 @@ function App() {
   };
 
   const onLogout = async() => {
-    // await authService.logout();
+    await authService.logout();
     setAuth({});
   }
 
@@ -91,16 +92,15 @@ function App() {
     const recipe = await recipeService.create(data);
 
     setRecipes(state => [...state, recipe]);
-      
+
     navigate('/catalog');
   }
 
-  const onEditRecipeSubmit = async (values) => {
-    console.log(values)
+  const onEditRecipeSubmit = async (values) => {  
     const recipe = await recipeService.edit(values._id, values);
 
-    setRecipes(state => state.map(x => x._id === values._id ? recipe : x))
-      
+    setRecipes(state => state.map(x => x._id === values._id ? recipe : x));
+
     navigate(`/catalog/${values._id}`);
   }
 
@@ -108,16 +108,15 @@ function App() {
     setRecipes(state => state.filter(x => x._id !== recipeId));
   }
   
-  const likeRecipe = (id) => {
-    setRecipes(state => state.map(x => x._id === id ? {...x, likes : x.likes + 1} : x));     
-  }
+  // const likeRecipe = (id) => {
+  //   setRecipes(state => state.map(x => x._id === id ? {...x, likes : x.likes + 1} : x));     
+  // }
 
   const contextValues = {
     onRegisterSubmit,
     onLoginSubmit,
     onLogout,
     deleteRecipe,
-    likeRecipe,
     userId:auth._id,
     token:auth.accessToken,
     userEmail:auth.email,
@@ -135,17 +134,23 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
-          <Route path='/catalog' element={<Catalog recipes={recipes}/>} />        
+          <Route path='/catalog' element={<Catalog recipes={recipes}/>} />    
           <Route path='/catalog/:id' element={<RecipeDetails />} />   
           <Route path='/create-recipe' element={
             <RouteGuard>
                <CreateRecipe onCreateRecipeSubmit={onCreateRecipeSubmit}/>
             </RouteGuard>
-          } />
-          <Route path='/catalog/:id/edit' element={<EditRecipe onEditRecipeSubmit={onEditRecipeSubmit} />} />
+          } 
+          />
+          <Route path='/catalog/:id/edit' element={
+            <RouteGuard>
+              <EditRecipe onEditRecipeSubmit={onEditRecipeSubmit}  />
+            </RouteGuard>
+          }
+          />
         </Routes>       
 
-        <Footer />  
+        {/* <Footer />   */}
 
       </div>
     </AuthContext.Provider>    

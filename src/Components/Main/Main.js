@@ -9,8 +9,8 @@ export const Main = () => {
     return (
         <div className="main">
             <div className="welcome-container">
-                <h1>Welcome To Our Recipe Collections</h1>
-                <img src="./style/images/photo.jpeg" alt="intro" />
+                <h1>Еat delicious, be happy!</h1>
+                <img src="./style/images/fruits.jpg" alt="intro" />
                 
                 {!isAuthenticated && (
                     <>

@@ -7,9 +7,16 @@
     font-size: 17px;
     margin-top: 72px;  
     background: #f5f5f5;
+    margin-bottom:20px;
+    box-shadow: 0 0.5rem 1.2rem rgba(0,0,0,.2);
+}
+
+.content-container {
+    width: 50%;
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin: 0 auto;
 }
 
 .recipe-name {
@@ -70,4 +77,107 @@
 .like-img {
     width: 40px;
     height: 40px;
+}
+
+.add-comment-container {
+    margin: 10px 0px 20px 0px;
+}
+
+   
+.respond-area {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.details-comment {
+    width: 100%;
+}
+
+.comments-title {
+    text-align: center;
+    padding-top: 6rem;
+}
+
+.comments-title span {
+    position: relative;
+}
+
+.comments-title span:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(130deg,#ff7a18,#af002d 41.07%,#319197 76.05%);
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.comment-form textarea {
+    margin:10px 0px;
+}
+
+.comment-wrap {    
+    position: relative;
+    display: grid;
+    margin: 0 0 2px;
+    grid-template-columns: 30% 1fr;
+}
+.comment-wrap:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    display: block;
+    width: 50%;
+    /* background: #5e5e5e; */
+    background: linear-gradient(130deg,#ff7a18,#af002d 41.07%,#319197 76.05%);
+}
+.comment-content {
+    overflow: hidden;
+    background: #170606;
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    z-index: 1;
+    position: relative;
+}
+
+.comment-content p {
+    max-width: 700px;
+}
+
+ul {
+    display: block;
+    list-style-type: decimal;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    width: 100%;
+}
+
+li {
+    list-style: none;
+    position: relative;
+    margin: 0 0 1rem;
+}
+
+.comment-author {
+    font-family: MD Primer Bold,Rubik,Lato,Lucida Grande,Lucida Sans Unicode,Tahoma,Sans-Serif;
+    font-style: normal;
+    font-weight: 700;
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.details-comments {
+    width: 100%;
 }

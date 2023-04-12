@@ -1,6 +1,7 @@
 import { CatalogItem } from "../Catalog/CatalogItem/CatalogItem";
 
 export const Catalog = ({recipes}) => {
+    console.log(recipes)
     return (
         <>
             <section className="catalog-container">         
